@@ -1,0 +1,2 @@
+from utils.ratio_engine import calculate_and_insert_ratios
+calculate_and_insert_ratios()
