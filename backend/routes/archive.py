@@ -4,6 +4,7 @@ import requests
 import os
 import webbrowser
 from fastapi import APIRouter
+from backend.db import get_db_connection
 router = APIRouter()
 
 

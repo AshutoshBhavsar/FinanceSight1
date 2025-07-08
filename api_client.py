@@ -1,5 +1,7 @@
 import requests
 
+
+BASE_URL = "http://127.0.0.1:8000"
 def insert_invoice_api(vendor, amount, date, category, file_path):
     url = "http://127.0.0.1:8000/upload_invoice"
     payload = {
@@ -43,3 +45,10 @@ def fetch_latest_ratios():
     response = requests.get("http://127.0.0.1:8000/get_ratios")
     response.raise_for_status()
     return response.json()
+def fetch_monthly_expense():
+    res = requests.get(f"{BASE_URL}/report/monthly_expenses")
+    return res.json() 
+
+def fetch_vendor_expense():
+    res = requests.get(f"{BASE_URL}/report/vendor_expenses")
+    return res.json()

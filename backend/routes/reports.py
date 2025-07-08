@@ -11,7 +11,7 @@ def get_monthly_expense():
         SELECT DATE_FORMAT(invoice_date, '%Y-%m') as month, SUM(amount)
         FROM invoices GROUP BY month ORDER BY month
     """)
-    rows = cursor.fetchall()
+    data = cursor.fetchall()
     conn.close()
     return [{"month": row[0], "total": float(row[1])} for row in rows]
 
@@ -20,6 +20,6 @@ def get_vendor_expense():
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute("SELECT vendor, SUM(amount) FROM invoices GROUP BY vendor")
-    rows = cursor.fetchall()
+    data = cursor.fetchall()
     conn.close()
     return [{"vendor": row[0], "total": float(row[1])} for row in rows]

@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from backend.routes import invoices, ratios
 from backend.routes import reports
 from backend.routes import archive
-
+from backend.routes import invoices, ratios, reports
 
 app = FastAPI()
 
