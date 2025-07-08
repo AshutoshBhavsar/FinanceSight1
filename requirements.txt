@@ -1,0 +1,9 @@
+pdfplumber
+pytesseract
+Pillow
+mysql-connector-python
+python-dotenv
+tkinterweb
+plotly
+pandas
+schedule
