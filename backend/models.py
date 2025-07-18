@@ -15,3 +15,4 @@ class Invoice(BaseModel):
     invoice_date: str
     category: str
     file_path: str  
+    

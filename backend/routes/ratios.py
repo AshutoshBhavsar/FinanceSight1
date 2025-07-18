@@ -3,14 +3,14 @@ from backend.db import get_db_connection
 
 router = APIRouter()
 
-@router.get("/ratios")
-def get_all_ratios():
+@router.get("/get_ratios")
+def get_ratios():
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute("""
             SELECT month, current_ratio, quick_ratio, burn_rate, profit_margin 
-            FROM ratios ORDER BY month DESC
+            FROM financial_ratios ORDER BY month DESC
         """)
         rows = cursor.fetchall()
         conn.close()

@@ -54,3 +54,4 @@ def calculate_and_insert_ratios():
 
 if __name__ == "__main__":
     calculate_and_insert_ratios()
+    

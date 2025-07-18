@@ -33,7 +33,7 @@ def get_invoices(
         conn = get_db_connection()
         cursor = conn.cursor()
 
-        query = "SELECT vendor, amount, invoice_date, category FROM invoices WHERE 1=1"
+        query = "SELECT vendor, amount, invoice_date, category , file_path FROM invoices WHERE 1=1"
         params = []
 
         if vendor:
@@ -52,7 +52,54 @@ def get_invoices(
         conn.close()
 
         return [
-            {"vendor": r[0], "amount": float(r[1]), "invoice_date": str(r[2]), "category": r[3]}
+            {"vendor": r[0], "amount": float(r[1]), "invoice_date": str(r[2]), "category": r[3], "file_path": r[4]}
+            for r in rows
+        ]
+    except Exception as e:
+        return {"error": str(e)}
+    
+@router.get("/invoices/archive")
+def get_invoice_archive():
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT vendor, amount, invoice_date, category, file_path 
+            FROM invoices ORDER BY invoice_date DESC
+        """)
+        rows = cursor.fetchall()
+        conn.close()
+
+        return [
+            {
+                "vendor": r[0],
+                "amount": float(r[1]),
+                "invoice_date": str(r[2]),
+                "category": r[3],
+                "file_path": r[4]
+            }
+            for r in rows
+        ]
+    except Exception as e:
+        return {"error": str(e)}
+
+
+@router.get("/get_archive")
+def get_archive():
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT vendor, amount, invoice_date, category, file_path FROM invoices ORDER BY invoice_date DESC")
+        rows = cursor.fetchall()
+        conn.close()
+        return [
+            {
+                "vendor": r[0],
+                "amount": float(r[1]),
+                "invoice_date": str(r[2]),
+                "category": r[3],
+                "file_path": r[4]
+            }
             for r in rows
         ]
     except Exception as e:

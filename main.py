@@ -3,40 +3,66 @@ from gui.gui_upload import UploadWindow
 from gui.gui_invoices import InvoicesWindow
 from gui.gui_ratios import RatiosWindow
 from gui.gui_reports import ReportsWindow
-from gui.gui_dashboard import DashboardWindow
+from gui.gui_archive import ArchiveWindow
+from gui.gui_charts import ChartsWindow
+from PyQt6.QtWidgets import QApplication
+import sys
 
-class DashboardWindow(tk.Frame):
-    def __init__(self, parent):
-        super().__init__(parent)
-        parent.title("📊 FinanceSight Dashboard")
-        parent.geometry("500x500")
-        parent.configure(bg="#F8F9FA")
-        self.configure(bg="#F8F9FA")
-        self.pack(padx=30, pady=30)
+class DashboardWindow(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("📊 FinanceSight Dashboard")
+        self.state('zoomed')  # Full screen
+        self.configure(bg="white")
+        self.create_widgets()
 
-        tk.Label(self, text="📊 FinanceSight Dashboard", font=("Segoe UI", 20, "bold"), fg="#2C3E50", bg="#F8F9FA").pack(pady=20)
+    def create_widgets(self):
+        tk.Label(self, text="📊 FinanceSight Dashboard", font=("Helvetica", 24, "bold"), fg="#2C3E50", bg="white").pack(pady=40)
 
-        # Button style
-        btn_font = ("Segoe UI", 11, "bold")
-        btn_width = 25
-        pady = 10
+        btn_font = ("Segoe UI", 12, "bold")
+        btn_width = 30
+        pady = 12
 
-        tk.Button(self, text="📤 Upload Invoice PDF", font=btn_font, width=btn_width,
-                  bg="#3498DB", fg="white", command=lambda: UploadWindow(parent)).pack(pady=pady)
+        tk.Button(self, text="📤 Upload Invoice", bg="#3498DB", fg="white", width=btn_width,
+                  font=btn_font, command=self.open_upload).pack(pady=pady)
 
-        tk.Button(self, text="📄 View Invoices Table", font=btn_font, width=btn_width,
-                  bg="#2ECC71", fg="white", command=lambda: InvoicesWindow(parent)).pack(pady=pady)
+        tk.Button(self, text="📄 View Invoices", bg="#2ECC71", fg="white", width=btn_width,
+                  font=btn_font, command=self.open_invoices).pack(pady=pady)
 
-        tk.Button(self, text="📈 Financial Ratios", font=btn_font, width=btn_width,
-                  bg="#E67E22", fg="white", command=lambda: RatiosWindow(parent)).pack(pady=pady)
+        tk.Button(self, text="📈 Financial Ratios", bg="#E67E22", fg="white", width=btn_width,
+                  font=btn_font, command=self.open_ratios).pack(pady=pady)
 
-        tk.Button(self, text="📊 Charts & Reports", font=btn_font, width=btn_width,
-                  bg="#9B59B6", fg="white", command=lambda: ReportsWindow(parent)).pack(pady=pady)
+        tk.Button(self, text="📁 Reports Archive", bg="#34495E", fg="white", width=btn_width,
+                  font=btn_font, command=self.open_archive).pack(pady=pady)
 
-        tk.Button(self, text="❌ Exit", font=btn_font, width=20,
-                  bg="#C0392B", fg="white", command=parent.quit).pack(pady=30)
+        tk.Button(self, text="📊 Charts & Reports", bg="#9B59B6", fg="white", width=btn_width,
+                  font=btn_font, command=self.show_charts).pack(pady=pady)
+
+        tk.Button(self, text="❌ Exit", bg="#C0392B", fg="white", width=20,
+                  font=btn_font, command=self.destroy).pack(pady=30)
+
+    def open_upload(self):
+        UploadWindow(self)
+
+    def open_invoices(self):
+        InvoicesWindow(self)
+
+    def open_ratios(self):
+        RatiosWindow(self)
+
+    def open_archive(self):
+        self.launch_qt_window(ArchiveWindow)
+
+    def show_charts(self):
+        self.launch_qt_window(ChartsWindow)
+
+    def launch_qt_window(self, window_class):
+        app = QApplication.instance()
+        if not app:
+            app = QApplication(sys.argv)
+        win = window_class()
+        win.show()
 
 if __name__ == "__main__":
-    root = tk.Tk()
-    app = DashboardWindow(root)
-    root.mainloop()
+    app = DashboardWindow()
+    app.mainloop()

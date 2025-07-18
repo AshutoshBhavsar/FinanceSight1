@@ -23,3 +23,27 @@ def get_vendor_expense():
     data = cursor.fetchall()
     conn.close()
     return [{"vendor": row[0], "total": float(row[1])} for row in rows]
+@router.get("/monthly_trends")
+def monthly_trends():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT DATE_FORMAT(invoice_date, '%%Y-%%m') AS month, 
+               SUM(amount) AS total 
+        FROM invoices 
+        GROUP BY month 
+        ORDER BY month
+    """)
+    rows = cursor.fetchall()
+    conn.close()
+    return [{"month": r[0], "total": float(r[1])} for r in rows]
+@router.get("/expenses/monthly")
+def get_monthly_expenses():
+    # SQL logic here
+    return [...]
+
+@router.get("/expenses/by_vendor")
+def get_expenses_by_vendor():
+    # SQL logic here
+    return [...]
+
