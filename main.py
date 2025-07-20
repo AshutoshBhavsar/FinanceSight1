@@ -6,6 +6,7 @@ from gui.gui_reports import ReportsWindow
 from gui.gui_archive import ArchiveWindow
 from gui.gui_charts import ChartsWindow
 from PyQt6.QtWidgets import QApplication
+from gui.gui_charts import ChartsWindow
 import sys
 
 class DashboardWindow(tk.Tk):
@@ -55,13 +56,20 @@ class DashboardWindow(tk.Tk):
 
     def show_charts(self):
         self.launch_qt_window(ChartsWindow)
+        
+    def open_charts():
+        ChartsWindow().show()
 
     def launch_qt_window(self, window_class):
-        app = QApplication.instance()
-        if not app:
-            app = QApplication(sys.argv)
-        win = window_class()
-        win.show()
+        from PyQt6.QtWidgets import QApplication
+        import sys
+
+        if not hasattr(self, 'qt_app') or self.qt_app is None:
+            self.qt_app = QApplication.instance() or QApplication(sys.argv)
+
+        self.qt_window = window_class()
+        self.qt_window.show()
+
 
 if __name__ == "__main__":
     app = DashboardWindow()

@@ -7,3 +7,7 @@ tkinterweb
 plotly
 pandas
 schedule
+fastapi
+uvicorn
+PyQt6
+requests

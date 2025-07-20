@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Query
-from backend.models import Invoice
+from backend.models import InvoiceInput
 from backend.db import get_db_connection
 from typing import Optional
 
@@ -7,7 +7,7 @@ router = APIRouter()
 
 # 1. Upload invoice
 @router.post("/upload_invoice")
-def upload_invoice(data: Invoice):
+def upload_invoice(data: InvoiceInput):
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
@@ -57,33 +57,9 @@ def get_invoices(
         ]
     except Exception as e:
         return {"error": str(e)}
-    
-@router.get("/invoices/archive")
-def get_invoice_archive():
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        cursor.execute("""
-            SELECT vendor, amount, invoice_date, category, file_path 
-            FROM invoices ORDER BY invoice_date DESC
-        """)
-        rows = cursor.fetchall()
-        conn.close()
-
-        return [
-            {
-                "vendor": r[0],
-                "amount": float(r[1]),
-                "invoice_date": str(r[2]),
-                "category": r[3],
-                "file_path": r[4]
-            }
-            for r in rows
-        ]
-    except Exception as e:
-        return {"error": str(e)}
 
 
+# 3. Get full archive
 @router.get("/get_archive")
 def get_archive():
     try:

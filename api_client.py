@@ -2,6 +2,8 @@ import requests
 
 API_URL = "http://127.0.0.1:8000"
 BASE_URL = "http://127.0.0.1:8000"
+res = requests.get(f"{BASE_URL}/get_ratios")
+
 def insert_invoice_api(vendor, amount, date, category, file_path):
     url = "http://127.0.0.1:8000/upload_invoice"
     payload = {
@@ -42,7 +44,7 @@ def get_latest_ratios_api():
     except:
         return {}
 def fetch_latest_ratios():
-    response = requests.get("http://127.0.0.1:8000/ratios")
+    response = requests.get("http://127.0.0.1:8000/get_ratios")  # ✅ CORRECT endpoint
     response.raise_for_status()
     return response.json()
 
@@ -84,3 +86,20 @@ def fetch_ratios():
     res = requests.get(f"{API_BASE}/get_ratios")
     res.raise_for_status()
     return res.json()
+def fetch_all_ratios():
+    response = requests.get("http://127.0.0.1:8000/get_all_ratios")
+    response.raise_for_status()
+    return response.json()
+def fetch_all_invoices():
+    response = requests.get("http://127.0.0.1:8000/get_archive")
+    response.raise_for_status()
+    return response.json()
+def fetch_monthly_expense_trend():
+    response = requests.get("http://127.0.0.1:8000/chart/monthly_expense")
+    response.raise_for_status()
+    return response.json()
+
+def fetch_vendor_expense_distribution():
+    response = requests.get("http://127.0.0.1:8000/chart/vendor_expense")
+    response.raise_for_status()
+    return response.json()
